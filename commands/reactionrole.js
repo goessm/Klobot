@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, PermissionsBitField} = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
 
 /**
  * Command that turns given message into reaction role message.
  */
 
-const requiredPermissions = [PermissionsBitField.Flags.Administrator];
+const requiredPermissions = PermissionFlagsBits.Administrator;
+const allowInDMs = false;
 
 const execute = async (interaction) => {
     if (!interaction.member.permissions.has(requiredPermissions)) {
@@ -17,6 +18,8 @@ const execute = async (interaction) => {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reactionrole')
-        .setDescription('Turns given message into reaction role message.'),
+        .setDescription('Turns given message into reaction role message.')
+        .setDefaultMemberPermissions(requiredPermissions)
+        .setDMPermission(allowInDMs),
     execute,
 };
