@@ -138,16 +138,6 @@ const _getMessageFromModalInput = async (interaction) => {
 
 }
 
-const _getNextButtonInteraction = async (interaction, buttonId) => {
-    // Listen for button
-    const filter = (interaction) => interaction.customId === buttonId && interaction.user.id === interaction.user.id;
-    const collector = interaction.channel.createMessageComponentCollector({filter, time: 15_000});
-    collector.on('collect', async i => {
-        console.log('button pressed')
-    });
-
-}
-
 module.exports = {
     name,
     subCommand,

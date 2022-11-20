@@ -65,51 +65,6 @@ const _getRoleFromEmoji = (emoji, roleData) => {
     return role;
 }
 
-/**
- * Not using this, because collectors seemingly cannot collect old reaction removals
- */
-const _createCollectors = async (client) => {
-    const reactionRoleData = await reactionRoleStorage.getData();
-    let messageData = [];
-    for (const entry of reactionRoleData) {
-        messageData.push({
-            guildId: entry.guildId,
-            channelId: entry.channelId,
-            messageId: entry.messageId,
-        });
-    }
-    if (messageData.length === 0) return;
-    for (const data of messageData) {
-        const guild = await client.guilds.fetch(data.guildId);
-        if (!guild) {
-            console.log('reactionrole: Error fetching guild ' + data.guildId);
-            continue;
-        }
-        const channel = await guild.channels.fetch(data.channelId);
-        const message = await channel?.messages.fetch(data.messageId);
-        if (!message) {
-            console.log('reactionrole: Error fetching message ' + data.messageId);
-        }
-        _createCollector(client, message);
-    }
-}
-
-/**
- * Not using this, because collectors seemingly cannot collect old reaction removals
- */
-const _createCollector = (client, message) => {
-    const collector = message.createReactionCollector({dispose: true});
-
-    collector.on('collect', (reaction, user) => {
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-    });
-
-    collector.on('remove', (reaction, user) => {
-        // Issue: this doesn't get called if an old reaction is removed. Not using collectors because of this
-        console.log('remove')
-    })
-}
-
 module.exports = {
     handleReactionRoleAdd,
     handleReactionRoleRemove
