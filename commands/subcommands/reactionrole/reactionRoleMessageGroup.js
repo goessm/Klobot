@@ -16,7 +16,6 @@ const subCommandGroup = (group) =>
 
 const execute = async (interaction) => {
     const subCommand = interaction.options.getSubcommand();
-    console.log("aa " + subCommand);
     for (const sub of subCommands) {
         if (sub.name === subCommand) {
             await sub.execute(interaction);
